@@ -1,0 +1,36 @@
+name: Executar Automacao YouTube
+
+on:
+  schedule:
+  - cron: '0 3 * * *' # Executa automaticamente todos os dias às 00:00 (horário de Brasília)
+  workflow_dispatch:      # Permite executar manualmente pelo botão "Run workflow"
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+      - name: Criar arquivos de credenciais
+        env:
+          CLIENT_SECRET_JSON: ${{ secrets.CLIENT_SECRET_JSON }}
+          TOKEN_JSON: ${{ secrets.TOKEN_JSON }}
+        run: |
+          echo "$CLIENT_SECRET_JSON" > client_secret.json
+          echo "$TOKEN_JSON" > token.json
+
+      - name: Rodar script de automação
+        run: |
+          python automacao_youtube.py
