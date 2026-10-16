@@ -53,3 +53,9 @@ print(f"chave: {f1.nome}-{f2.nome}-{f1.salario_anual}-{f2.salario}-{f2.salario_a
 # 2. Envie este arquivo para a pasta aula-03. O nome tem que ser ex01.py.
 # ============================================================
 # SAÍDA:
+# Ana 3000
+# Bruno 32500
+# 3000 39000
+# True
+# Ana 3000
+# chave: Ana-Bruno-39000-3000-39000

@@ -14,19 +14,27 @@
 class Celular:
     def __init__(self, marca, bateria):
         self.marca = marca
-        self._bateria = bateria
+        self.bateria = bateria
 
     @property
     def bateria(self):
         return self._bateria
+    
     @bateria.setter
     def bateria(self, valor):
         if valor > 100:
-            return valor == 100
-        if valor < 0:
-            return valor == 0
+            self._bateria = 100
+        elif valor < 0:
+            self._bateria = 0
+        else:
+            self._bateria = valor
 
-    
+    def carregar(self, quantidade):
+        self.bateria = self.bateria + quantidade
+
+    def usar(self, minutos):
+        self.bateria = self.bateria - minutos
+
 
 # ===== TESTE (não altere estas linhas) =====
 c1 = Celular("Samsung", 80)
@@ -62,3 +70,12 @@ print(f"chave: {c1.marca}-{c2.marca}-{c1.bateria}-{c2._bateria}-{c3.bateria}-{c4
 # 2. Envie este arquivo para a pasta aula-03. O nome tem que ser ex02.py.
 # ============================================================
 # SAÍDA:
+# Samsung 80
+# Motorola 100
+# 100
+# 70
+# 0
+# 45
+# 100
+# 0 100
+# chave: Samsung-Motorola-70-0-45-100
