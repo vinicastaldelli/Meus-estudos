@@ -62,30 +62,33 @@ def filtrar_e_verificar_detalhes(youtube, lista_videos):
         part="contentDetails,player", id=",".join(ids_lote)
     )
     res_detalhes = req_detalhes.execute()
-
+    
     info_videos = {}
     for item in res_detalhes.get("items", []):
-      id_vid = item["id"]
-      iso_duration = item["contentDetails"]["duration"]
-      duracao_seg = converter_duracao_iso_para_segundos(iso_duration)
+        id_vid = item["id"]
+        content_details = item.get("contentDetails", {})
+        iso_duration = content_details.get("duration")
 
-      # Considera assistido se a API retornar flag no player/contentDetails
-      assistido = item.get("contentDetails", {}).get(
-          "licensedContent", False
-      ) and False
+        # Se o vídeo não tiver duração (ex: live ativa ou indisponível), ignora de forma segura
+        if not iso_duration:
+            continue
+            
+        duracao_seg = converter_duracao_iso_para_segundos(iso_duration)
 
-      info_videos[id_vid] = {"duracao": duracao_seg, "assistido": assistido}
+        # Considera assistido se a API retornar flag no player/contentDetails
+        assistido = item.get("contentDetails", {}).get(
+            "licensedContent", False
+        ) and False
 
+        info_videos[id_vid] = {"duracao": duracao_seg, "assistido": assistido}
+      
     for vid in lote:
       detalhes = info_videos.get(vid["id"], {"duracao": 0, "assistido": False})
-
       # Filtro 1: Nao pode ser Short (> 60s)
       # Filtro 2: Nao pode ter sido assistido
       if detalhes["duracao"] > 60 and not detalhes["assistido"]:
         videos_validos.append(vid)
-
   return videos_validos
-
 
 def adicionar_novos_videos():
   youtube = autenticar_youtube()
