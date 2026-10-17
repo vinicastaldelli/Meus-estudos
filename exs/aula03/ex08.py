@@ -15,6 +15,51 @@
 # recusa, deixe essa tentativa como ÚLTIMA linha: o programa para no seu
 # ValueError e o que vem depois não roda.
 
+class Horario:
+    def __init__(self, hora, minuto):
+        self.hora = hora
+        self.minuto = minuto
+
+    @property
+    def hora(self):
+        return self._hora
+    
+    @hora.setter
+    def hora(self, valor):
+        if 0 <= valor <= 23:
+            self._hora = valor
+        else:
+            raise ValueError("Hora deve estar entre 0 e 23.")
+
+    @property
+    def minuto(self):
+        return self._minuto
+    
+    @minuto.setter
+    def minuto(self, valor):
+        if 0 <= valor <= 59:
+            self._minuto = valor
+        else:
+            raise ValueError("Minuto deve estar entre 0 e 59.")
+
+    def avancar(self, minutos):
+        total_minutos = self.hora * 60 + self.minuto + minutos
+        self.hora = (total_minutos // 60) % 24
+        self.minutos = total_minutos % 60
+
+    def __str__(self):
+        return f"{self.hora:02d}:{self.minuto:02d}"       
+
+horario1 = Horario(8, 50)
+print(horario1)
+horario1.avancar(25)
+print(horario1)
+
+horario2 = Horario(23, 50)
+print(horario2)
+horario2.avancar(15)
+print(horario2)
+
 # ============================================================
 # PARA ENTREGAR
 # 1. Rode e cole embaixo de SAÍDA tudo o que apareceu no terminal,
@@ -22,3 +67,7 @@
 # 2. Envie este arquivo para a pasta aula-03. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# 08:50
+# 09:50
+# 23:50
+# 00:50
