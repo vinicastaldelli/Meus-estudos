@@ -2,7 +2,7 @@ name: Executar Automacao YouTube
 
 on:
   schedule:
-  - cron: '0 3 * * *' # Executa automaticamente todos os dias às 00:00 (horário de Brasília)
+    - cron: '0 3 * * *'  # Executa automaticamente todos os dias às 00:00 (horário de Brasília)
   workflow_dispatch:      # Permite executar manualmente pelo botão "Run workflow"
 
 jobs:
