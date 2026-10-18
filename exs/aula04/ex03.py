@@ -19,7 +19,6 @@
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 #   __repr__ ............... aula 02, slide 27  https://poo.leoad.com.br/aulas/aula-02/#s27
 
-
 class Produto:
     def __init__(self, nome, preco):
         self._nome = nome     # só de leitura: direto na gaveta
