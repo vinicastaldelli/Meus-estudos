@@ -1,0 +1,70 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DER - Pata Saudavel" id="Vt_9J_DojInZORiO0y7b">
+    <mxGraphModel dx="1603" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="UgNubpnn5qPk0TULoroj-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=16;spacingTop=12;fontSize=15;fontColor=#17365D;fillColor=#EAF2F8;strokeColor=#4472C4;strokeWidth=2;" value="CLIENTE&#xa;&#xa;PK  CPF&#xa;Nome&#xa;Endereco&#xa;Telefone" vertex="1">
+          <mxGeometry height="180" width="205" x="180" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-5" parent="1" style="rhombus;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#17365D;fillColor=#FFF2CC;strokeColor=#BF9000;strokeWidth=2;" value="POSSUI" vertex="1">
+          <mxGeometry height="70" width="90" x="420" y="515" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=16;spacingTop=12;fontSize=15;fontColor=#17365D;fillColor=#EAF2F8;strokeColor=#4472C4;strokeWidth=2;" value="PACIENTE&#xa;&#xa;PK  ID&#xa;Nome&#xa;Especie&#xa;Raca&#xa;Data de nascimento" vertex="1">
+          <mxGeometry height="220" width="210" x="545" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-7" parent="1" style="rhombus;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#17365D;fillColor=#FFF2CC;strokeColor=#BF9000;strokeWidth=2;" value="RECEBE" vertex="1">
+          <mxGeometry height="70" width="90" x="790" y="515" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=16;spacingTop=12;fontSize=15;fontColor=#17365D;fillColor=#EAF2F8;strokeColor=#4472C4;strokeWidth=2;" value="CONSULTA&#xa;&#xa;PK  ID_consulta&#xa;Data&#xa;Hora&#xa;Motivo&#xa;Diagnostico final" vertex="1">
+          <mxGeometry height="220" width="220" x="915" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-9" parent="1" style="rhombus;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#17365D;fillColor=#FFF2CC;strokeColor=#BF9000;strokeWidth=2;" value="REALIZA" vertex="1">
+          <mxGeometry height="70" width="90" x="1170" y="515" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=16;spacingTop=12;fontSize=15;fontColor=#17365D;fillColor=#EAF2F8;strokeColor=#4472C4;strokeWidth=2;" value="VETERINARIO&#xa;&#xa;PK  CRMV&#xa;Nome&#xa;Especialidade&#xa;Telefone" vertex="1">
+          <mxGeometry height="180" width="220" x="1295" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-11" edge="1" parent="1" source="UgNubpnn5qPk0TULoroj-4" style="endArrow=none;html=1;rounded=0;strokeColor=#52657A;strokeWidth=2;" target="UgNubpnn5qPk0TULoroj-5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-12" edge="1" parent="1" source="UgNubpnn5qPk0TULoroj-5" style="endArrow=none;html=1;rounded=0;strokeColor=#52657A;strokeWidth=2;" target="UgNubpnn5qPk0TULoroj-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-13" edge="1" parent="1" source="UgNubpnn5qPk0TULoroj-6" style="endArrow=none;html=1;rounded=0;strokeColor=#52657A;strokeWidth=2;" target="UgNubpnn5qPk0TULoroj-7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-14" edge="1" parent="1" source="UgNubpnn5qPk0TULoroj-7" style="endArrow=none;html=1;rounded=0;strokeColor=#52657A;strokeWidth=2;" target="UgNubpnn5qPk0TULoroj-8" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-15" edge="1" parent="1" source="UgNubpnn5qPk0TULoroj-8" style="endArrow=none;html=1;rounded=0;strokeColor=#52657A;strokeWidth=2;" target="UgNubpnn5qPk0TULoroj-9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-16" edge="1" parent="1" source="UgNubpnn5qPk0TULoroj-9" style="endArrow=none;html=1;rounded=0;strokeColor=#52657A;strokeWidth=2;" target="UgNubpnn5qPk0TULoroj-10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-17" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#17365D;" value="1" vertex="1">
+          <mxGeometry height="24" width="25" x="392" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-18" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#17365D;" value="0..N" vertex="1">
+          <mxGeometry height="24" width="42" x="512" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-19" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#17365D;" value="1" vertex="1">
+          <mxGeometry height="24" width="25" x="757" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-20" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#17365D;" value="0..N" vertex="1">
+          <mxGeometry height="24" width="42" x="882" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-21" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#17365D;" value="0..N" vertex="1">
+          <mxGeometry height="24" width="42" x="1137" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-22" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#17365D;" value="1" vertex="1">
+          <mxGeometry height="24" width="25" x="1262" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="UgNubpnn5qPk0TULoroj-23" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontColor=#52657A;" value="Cada paciente pertence a um unico cliente. Cada consulta registra o atendimento de um paciente por um veterinario." vertex="1">
+          <mxGeometry height="45" width="930" x="380" y="740" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
