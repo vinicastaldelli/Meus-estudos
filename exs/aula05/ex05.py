@@ -33,7 +33,53 @@
 #   setter que recusa ...... aula 04, slide 19  https://poo.leoad.com.br/aulas/aula-04/#s19
 #   __repr__ ............... aula 02, slide 27  https://poo.leoad.com.br/aulas/aula-02/#s27
 
+class Contato:
+    total = 0
 
+    def __init__(self, nome, telefone, cidade="Goiânia"):
+        self.nome = nome
+        self.telefone = telefone
+        self.cidade = cidade
+        Contato.total += 1
+
+    @property
+    def telefone(self):
+        return self._telefone
+
+    @telefone.setter
+    def telefone(self, valor):
+        if len(valor) != 11:
+            raise ValueError("telefone precisa de 11 dígitos")
+        self._telefone = valor
+
+    @classmethod
+    def de_texto(cls, texto):
+        nome, telefone, cidade = texto.split(";")
+        return cls(nome, telefone, cidade)
+
+    def __repr__(self):
+        return f"Contato'{self.nome}', '{self.telefone}', '{self.cidade}'"
+
+ana = Contato("Ana", "62999990000")
+print(ana)
+print(Contato.total)
+
+linhas = [
+    "Bia;62988887777;Anápolis",
+    "Caio;62977776666;Trindade",
+    "Duda;64966665555;Rio Verde"
+]
+
+contatos = [Contato.de_texto(linha) for linha in linhas]
+print(contatos)
+print(Contato.total)
+
+try:
+    Contato("Eva", "6299")
+except ValueError as e:
+    print(e)
+
+print(Contato.total)
 # ============================================================
 # PARA ENTREGAR
 # 1. Rode e cole embaixo de SAÍDA tudo o que apareceu no terminal,
@@ -41,3 +87,9 @@
 # 2. Envie este arquivo para a pasta aula-05. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# Contato'Ana', '62999990000', 'Goiânia'
+# 1
+# [Contato'Bia', '62988887777', 'Anápolis', Contato'Caio', '62977776666', 'Trindade', Contato'Duda', '64966665555', 'Rio Verde']
+# 4
+# telefone precisa de 11 dígitos
+# 4

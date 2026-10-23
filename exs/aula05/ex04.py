@@ -29,7 +29,50 @@
 #   raise .................. aula 04, slide 10  https://poo.leoad.com.br/aulas/aula-04/#s10
 #   try/except ............. aula 04, slide 13  https://poo.leoad.com.br/aulas/aula-04/#s13
 
+class Van:
+    capacidade = 4
+    def __init__(self, rota, passageiros=None):
+        self._rota = rota
+        if passageiros is None:
+            passageiros = []
+        self.passageiros = passageiros
 
+    @property
+    def rota(self):
+        return self._rota
+
+    def embarcar(self, nome):
+        if nome == "":
+            raise ValueError("passageiro precisa de nome")        
+        if len(self.passageiros) < Van.capacidade:
+            self.passageiros.append(nome)
+            return True        
+        return False
+
+    def lugares_livres(self):
+        return Van.capacidade - len(self.passageiros)
+
+van_centro = Van("Centro")
+print(van_centro.embarcar("Ana"))   # True
+print(van_centro.embarcar("Bia"))   # True
+print(van_centro.embarcar("Caio"))  # True
+print(van_centro.embarcar("Duda"))  # True
+print(van_centro.embarcar("Elo"))   # False
+print(van_centro.lugares_livres()) # 0
+
+van_campus = Van("Campus")
+print(van_campus.lugares_livres()) # 4
+
+van_sul = Van("Setor Sul", ["Enzo"])
+print(van_sul.lugares_livres())    # 3
+
+Van.capacidade = 6
+print(van_centro.lugares_livres()) # 2
+
+try:
+    van_centro.embarcar("")
+except ValueError as e:
+    print(e)  # passageiro precisa de nome
 # ============================================================
 # PARA ENTREGAR
 # 1. Rode e cole embaixo de SAÍDA tudo o que apareceu no terminal,
@@ -37,3 +80,13 @@
 # 2. Envie este arquivo para a pasta aula-05. O nome tem que ser ex04.py.
 # ============================================================
 # SAÍDA:
+# True
+# True
+# True
+# True
+# False
+# 0
+# 4
+# 3
+# 2
+# passageiro precisa de nome
