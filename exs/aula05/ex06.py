@@ -27,6 +27,59 @@
 #   composição ............. aula 05, slide 38  https://poo.leoad.com.br/aulas/aula-05/#s38
 #   setter que recusa ...... aula 04, slide 19  https://poo.leoad.com.br/aulas/aula-04/#s19
 
+class Capitulo:
+    def __init__(self, titulo, paginas):
+        self.titulo = titulo
+        self.paginas = paginas
+
+    @property
+    def paginas(self):
+        return self._paginas
+
+    @paginas.setter
+    def paginas(self, pagina):
+        if pagina <= 0:
+            raise ValueError("capítulo precisa de páginas")
+        self._paginas = pagina
+
+class Livro:
+    def __init__(self, titulo):
+        self.titulo = titulo
+        self.capitulos = []
+
+    def adicionar_capitulo(self, titulo, paginas):
+        capitulo = Capitulo(titulo, paginas)
+        self.capitulos.append(capitulo)
+
+    def total_paginas(self):
+        total = 0
+        for capitulo in self.capitulos:
+            total += capitulo.paginas
+        return total
+
+    def capitulo_mais_longo(self):
+        if not self.capitulos:
+            return None
+
+        capitulo_maior = self.capitulos[0]
+        for capitulo in self.capitulos[1:]:
+            if capitulo.paginas > capitulo_maior.paginas:
+                capitulo_maior = capitulo
+
+        return capitulo_maior.titulo
+
+livro1 = Livro("Aventura")
+livro1.adicionar_capitulo("O começo", 12)
+livro1.adicionar_capitulo("A viagem", 30)
+livro1.adicionar_capitulo("O fim", 8)
+
+print(livro1.total_paginas())
+print(livro1.capitulo_mais_longo())
+
+livro2 = Livro("Livro")
+
+print(livro2.total_paginas())
+print(livro2.capitulo_mais_longo())
 
 # ============================================================
 # PARA ENTREGAR
@@ -35,3 +88,7 @@
 # 2. Envie este arquivo para a pasta aula-05. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# 50
+# A viagem
+# 0
+# None

@@ -49,13 +49,13 @@ class Midia:
     def minutos(self, minuto):
         if minuto < 1:
             raise ValueError("minutos inválidos")
-        self._minutos += minuto
+        self._minutos = minuto
 
     def duracao(self):
         return self._minutos
 
     def __str__(self):
-        return f"{self.titulo} ({self.minutos} min)"
+        return f"{self.titulo} ({self.duracao()} min)"
 
 class Filme(Midia):
     pass
@@ -71,12 +71,12 @@ class Serie(Midia):
         return super().duracao() * self.episodios
 
     def __str__(self):
-        return f"{super().__init__()} em {self.episodios} episódios"
+        return f"{super().__str__()} em {self.episodios} episódios"
 
 def minutos_de_series(midias):
     total = 0
     for midia in midias:
-        if isinstance(midias, Serie):
+        if isinstance(midia, Serie):
             total += midia.duracao()
     return total
 
@@ -130,3 +130,13 @@ print(f"chave: {s2.duracao()}-{minutos_de_series(catalogo)}-{s3.duracao()}-{len(
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex03.py.
 # ============================================================
 # SAÍDA:
+# Duna (155 min)
+# Dark (1560 min) em 26 episódios
+# 325
+# 45
+# Maid (550 min) em 10 episódios
+# 2435
+# True False False
+# recusado: minutos inválidos
+# 5 Duna (155 min) 325
+# chave: 325-2435-45-34-True-False-5
