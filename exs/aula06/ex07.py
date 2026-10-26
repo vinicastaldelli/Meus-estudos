@@ -28,6 +28,55 @@
 #   except ... as erro ..... aula 04, slide 15  https://poo.leoad.com.br/aulas/aula-04/#s15
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 
+class Produto:
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+    @property
+    def preco(self):
+        return self._preco
+
+    @preco.setter
+    def preco(self, valor):
+        if valor < 0:
+            raise ValueError("preço negativo")
+        self._preco = valor
+
+    def preco_final(self):
+        return self.preco
+
+    def __str__(self):
+        return f"{self.nome}: R$ {self.preco_final():.2f}"
+
+class Perecivel(Produto):
+    def __init__(self, nome, preco, dias):
+        if dias < 1:
+            raise ValueError("produto vencido")
+        super().__init__(nome, preco)
+        self.dias = dias
+
+    def preco_final(self):
+        if self.dias <= 2:
+            return super().preco_final() - super().preco_final() * 0.30
+        else:
+            return super().preco_final()
+
+    def __str__(self):
+        return f"{self.nome}: R$ {self.preco_final():.2f}"
+
+print(Perecivel("Iogurte", 10, 2))
+print(Perecivel("Queijo", 30, 10))
+
+try:
+    print(Perecivel("Leite", -5, 3))
+except ValueError as erro:
+    print(f"Leite recusado: {erro}")
+
+try:
+    print(Perecivel("Pão", 8, 0))
+except ValueError as erro:
+    print(f"Pão recusado: {erro}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -36,3 +85,7 @@
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# Iogurte: R$ 7.00
+# Queijo: R$ 30.00
+# Leite recusado: preço negativo
+# Pão recusado: produto vencido

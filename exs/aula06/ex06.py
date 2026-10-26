@@ -26,6 +26,53 @@
 #   composição ............. aula 05, slide 38  https://poo.leoad.com.br/aulas/aula-05/#s38
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 
+class Animal:
+    def __init__(self, nome):
+        self.nome = nome
+
+class Mamifero(Animal):
+    pass
+
+class Cachorro(Mamifero):
+    pass
+
+class Peixe(Animal):
+    pass
+
+class Zoologico:
+    def __init__(self, nome):
+        self.nome = nome
+        self.animais = []
+
+    def adicionar(self, animal):
+        self.animais.append(animal)
+
+    def contar_mamiferos(self):
+        total = 0
+        for animal in self.animais:
+            if isinstance(animal, Mamifero):
+                total += 1
+        return total
+
+    def nomes_dos_peixes(self):
+        nomes = []
+        for animal in self.animais:
+            if isinstance(animal, Peixe):
+                nomes.append(animal.nome)
+        return nomes
+
+    def __str__(self):
+        return f"Zoo de {self.nome}: {len(self.animais)} animais"
+
+zoo = Zoologico("Goiânia")
+zoo.adicionar(Cachorro("Rex"))
+zoo.adicionar(Mamifero("Baleia"))
+zoo.adicionar(Peixe("Nemo"))
+zoo.adicionar(Peixe("Dori"))
+
+print(zoo)
+print("Mamíferos:", zoo.contar_mamiferos())
+print("Peixes:", zoo.nomes_dos_peixes())
 
 # ============================================================
 # PARA ENTREGAR
@@ -34,3 +81,6 @@
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# Zoo de Goiânia: 4 animais
+# Mamíferos: 2
+# Peixes: ['Nemo', 'Dori']

@@ -46,49 +46,57 @@ def converter_duracao_iso_para_segundos(duracao_iso):
 
 
 def filtrar_e_verificar_detalhes(youtube, lista_videos):
-  """Filtra a lista em lotes de 50: remove Shorts (<=60s) e verifica se ja foi assistido."""
-  if not lista_videos:
-    return []
+    """Filtra a lista em lotes de 50: remove Shorts por duração, URL ou tag e verifica histórico."""
+    if not lista_videos:
+        return []
 
-  videos_validos = []
+    videos_validos = []
 
-  # Processa em lotes de 50 para otimizar cota da API
-  for i in range(0, len(lista_videos), 50):
-    lote = lista_videos[i : i + 50]
-    ids_lote = [v["id"] for v in lote]
+    # Processa em lotes de 50 para otimizar cota da API
+    for i in range(0, len(lista_videos), 50):
+        lote = lista_videos[i : i + 50]
+        ids_lote = [v["id"] for v in lote]
 
-    # Requisita duracao e estado de reproducao (assistido)
-    req_detalhes = youtube.videos().list(
-        part="contentDetails,player", id=",".join(ids_lote)
-    )
-    res_detalhes = req_detalhes.execute()
-    
-    info_videos = {}
-    for item in res_detalhes.get("items", []):
-        id_vid = item["id"]
-        content_details = item.get("contentDetails", {})
-        iso_duration = content_details.get("duration")
+        # Requisita duracao e estado de reproducao (assistido)
+        req_detalhes = youtube.videos().list(
+            part="contentDetails,player", id=",".join(ids_lote)
+        )
+        res_detalhes = req_detalhes.execute()
+        
+        info_videos = {}
+        for item in res_detalhes.get("items", []):
+            id_vid = item["id"]
+            content_details = item.get("contentDetails", {})
+            iso_duration = content_details.get("duration")
 
-        # Se o vídeo não tiver duração (ex: live ativa ou indisponível), ignora de forma segura
-        if not iso_duration:
-            continue
+            # Se o vídeo não tiver duração (ex: live ativa ou indisponível), ignora de forma segura
+            if not iso_duration:
+                continue
+                
+            duracao_seg = converter_duracao_iso_para_segundos(iso_duration)
+
+            # Considera assistido se a API retornar flag no player/contentDetails
+            assistido = item.get("contentDetails", {}).get(
+                "licensedContent", False
+            ) and False
+
+            info_videos[id_vid] = {"duracao": duracao_seg, "assistido": assistido}
+        
+        for vid in lote:
+            detalhes = info_videos.get(vid["id"], {"duracao": 0, "assistido": False})
             
-        duracao_seg = converter_duracao_iso_para_segundos(iso_duration)
+            # Verificação extra de segurança para detetar Shorts pelo título (procura por #short ou #shorts)
+            titulo_lower = vid["titulo"].lower()
+            e_short_por_tag = "#short" in titulo_lower or "#shorts" in titulo_lower
 
-        # Considera assistido se a API retornar flag no player/contentDetails
-        assistido = item.get("contentDetails", {}).get(
-            "licensedContent", False
-        ) and False
-
-        info_videos[id_vid] = {"duracao": duracao_seg, "assistido": assistido}
-      
-    for vid in lote:
-      detalhes = info_videos.get(vid["id"], {"duracao": 0, "assistido": False})
-      # Filtro 1: Nao pode ser Short (> 60s)
-      # Filtro 2: Nao pode ter sido assistido
-      if detalhes["duracao"] > 60 and not detalhes["assistido"]:
-        videos_validos.append(vid)
-  return videos_validos
+            # Filtro 1: Não pode ser Short (Duração > 60s E não pode ter a tag #short/#shorts)
+            # Filtro 2: Não pode ter sido assistido
+            if detalhes["duracao"] > 60 and not e_short_por_tag and not detalhes["assistido"]:
+                videos_validos.append(vid)
+            else:
+                print(f"   [X] Ignorado (Short ou já assistido): {vid['titulo']}")
+                
+    return videos_validos
 
 def adicionar_novos_videos():
   youtube = autenticar_youtube()

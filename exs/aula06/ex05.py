@@ -27,6 +27,50 @@
 #   try/except ............. aula 04, slide 13  https://poo.leoad.com.br/aulas/aula-04/#s13
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 
+class Pizza:
+    def __init__(self, sabor, preco):
+        self.sabor = sabor
+        self.preco = preco
+
+    @property
+    def preco(self):
+        return self._preco
+
+    @preco.setter
+    def preco(self, valor):
+        if valor < 0:
+            raise ValueError("preço não pode ser negativo")
+        self._preco = valor
+
+    def preco_final(self):
+        return self.preco
+
+    def __str__(self):
+        return f"{self.sabor}: R$ {self.preco_final():.2f}"
+
+class PizzaGrande(Pizza):
+    def preco_final(self):
+        return super().preco_final() * 0.5
+
+    def __str__(self):
+        return f"{super().__str__()} (grande)"
+
+class PizzaDoDia(Pizza):
+    def preco_final(self):
+        return 29.9
+
+pizza = Pizza("Calabresa", 40)
+pizza_grande = PizzaGrande("Calabrasa", 40)
+pizza_do_dia = PizzaDoDia("Frango", 45)
+
+print(pizza)
+print(pizza_grande)
+print(pizza_do_dia)
+
+try:
+    PizzaGrande("Atum", -10)
+except ValueError as erro:
+    print(erro)
 
 # ============================================================
 # PARA ENTREGAR
@@ -35,3 +79,7 @@
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# Calabresa: R$ 40.00
+# Calabrasa: R$ 20.00 (grande)
+# Frango: R$ 29.90
+# preço não pode ser negativo

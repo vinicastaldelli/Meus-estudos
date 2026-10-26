@@ -26,6 +26,42 @@
 #   try/except ............. aula 04, slide 13  https://poo.leoad.com.br/aulas/aula-04/#s13
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 
+class Conta:
+    def __init__(self, titular, saldo=0):
+        self.titular = titular
+        self._saldo = saldo
+
+    @property
+    def saldo(self):
+        return self._saldo
+
+    def depositar(self, valor):
+        if valor <= 0:
+            raise ValueError("depósito inválido")
+        self._saldo += valor
+
+    def __str__(self):
+        return f"{self.titular}: R$ {self._saldo:.2f}"
+
+class ContaPoupanca(Conta):
+    def __init__(self, titular, saldo, rendimento):
+        super().__init__(titular, saldo)
+        self.rendimento = rendimento
+
+    def render(self):
+        self._saldo += self._saldo * self.rendimento
+
+conta = Conta("Ana", 100)
+print(conta)
+
+poupanca = ContaPoupanca("Bia", 1000, 0.01)
+poupanca.render()
+print(poupanca)
+
+try:
+    conta.depositar(-50)
+except ValueError as erro:
+    print(erro)
 
 # ============================================================
 # PARA ENTREGAR
@@ -34,3 +70,6 @@
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex04.py.
 # ============================================================
 # SAÍDA:
+# Ana: R$ 100.00
+# Bia: R$ 1010.00
+# depósito inválido

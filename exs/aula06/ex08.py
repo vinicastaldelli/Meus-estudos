@@ -36,6 +36,91 @@
 #   raise .................. aula 04, slide 10  https://poo.leoad.com.br/aulas/aula-04/#s10
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 
+class ItemAcervo:
+    def __init__(self, titulo, ano, emprestado = False):
+        self._titulo = titulo
+        self.ano = ano
+        self.emprestado = emprestado
+
+    @property
+    def titulo(self):
+        return self._titulo
+
+    def prazo_dias(self):
+        return 7
+
+    def emprestar(self):
+        if self.emprestado:
+            raise ValueError("item já emprestado")
+        self.emprestado = True
+
+    def __str__(self):
+        return f"{self.titulo} ({self.ano}), prazo de {self.prazo_dias} dias"
+
+class Livro(ItemAcervo):
+    def __init__(self, titulo, ano, autor):
+        super().__init__(titulo, ano)
+        self.autor = autor
+
+    def prazo_dias(self):
+        return 14
+
+class Revista(ItemAcervo):
+    def prazo_dias(self):
+        return super().prazo_dias() - 4
+
+class Acervo:
+    def __init__(self, nome):
+        self.nome = nome
+        self.itens = []
+
+    def adicionar(self, item):
+        return self.itens.append(item)
+
+    def disponiveis(self):
+        disponivel = 0
+        for item in self.itens:
+            if not item.emprestado:
+                disponivel += 1
+        return disponivel
+
+    def quantos_livros(self):
+        quantidade = 0
+        for item in self.itens:
+            if isinstance(item, Livro):
+                quantidade += 1
+        return quantidade
+
+    def maior_prazo(self):
+        if not self.itens:
+            return None
+        maior = self.itens[0]
+        for item in self.itens[1:]:
+            if item.prazo_dias() > maior.prazo_dias():
+                maior = item
+            return maior
+
+acervo = Acervo("Biblioteca")
+
+item = ItemAcervo("Item avulso", 2020)
+livro = Livro("Dom Casmurro", 1899, "Machado de Assis")
+revista = Revista("Revista Exemplo", 2024)
+
+livro.emprestar()
+
+acervo.itens.extend([item, livro, revista])
+
+print("Disponíveis:", acervo.disponiveis())
+print("Livros:", acervo.quantos_livros())
+
+maior = acervo.maior_prazo()
+if maior is not None:
+    print(f"{maior.titulo} ({maior.ano}), prazo de {maior.prazo_dias()} dias")
+
+try:
+    livro.emprestar()
+except ValueError as erro:
+    print(f"Empréstimo recusado: {erro}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -44,3 +129,7 @@
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# Disponíveis: 2
+# Livros: 1
+# Dom Casmurro (1899), prazo de 14 dias
+# Empréstimo recusado: item já emprestado
