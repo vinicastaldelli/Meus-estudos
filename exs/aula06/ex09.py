@@ -82,36 +82,96 @@
 
 
 # PARTE 1
-class EstacionamentoLotadoError:
-    pass  # falta o pai entre parênteses
-
+class EstacionamentoLotadoError(Exception):
+    pass
 
 class Veiculo:
-    pass  # apague este pass quando escrever a classe
+    tarifa_hora = 6.0
+    total = 0
+    def __init__(self, placa, modelo, horas=1):
+        self._placa = placa
+        self.modelo = modelo
+        self.horas = horas
 
-    # PARTE 2: as properties placa e horas (com o setter)
+    @property
+    def placa(self):
+        return self._placa
 
-    # PARTE 3: valor, __str__, __repr__ e de_texto
+    @property
+    def horas(self):
+        return self._horas
 
+    @horas.setter
+    def horas(self, hora):
+        if hora < 1:
+            raise ValueError("o mínimo é 1 hora")
+        self._horas = hora
 
-# PARTE 4
+    def valor(self):
+        return self.tarifa_hora * self._horas
+
+    def __str__(self):
+        return f"{self._placa} {self.modelo} · {self._horas}h · R$ {self.valor():.2f}"
+
+    def __repr__(self):
+        return f"Veiculo('{self._placa}', '{self.modelo}', {self._horas})"
+
+    @classmethod
+    def de_texto(cls, texto):
+        partes = texto.split(";")
+        return cls(partes[0], partes[1], int(partes[2]))
+
 class Moto(Veiculo):
-    pass
-
+    tarifa_hora = 3.0
 
 class Caminhao(Veiculo):
-    pass
+    def __init__(self, placa, modelo, eixos, horas=1):
+        if eixos < 2:
+            raise ValueError("caminhão tem pelo menos 2 eixos")
+        super().__init__(placa, modelo, horas)
+        self.eixos = eixos
 
+    def valor(self):
+        return super().valor() * self.eixos
 
-# PARTE 5
+    def __str__(self):
+        return f"{super().__str__()} · {self.eixos} eixos"
+
 class Ticket:
-    pass
+    def __init__(self, numero, veiculo):
+        self.numero = numero
+        self.veiculo = veiculo
 
+    def __str__(self):
+        return f"#{self.numero} {self.veiculo.placa} {self.veiculo.modelo} · {self.veiculo.horas}h · R$ {self.veiculo.valor():.2f}"
 
 class Estacionamento:
-    pass
+    def __init__(self, nome, vagas=3):
+        self.nome = nome
+        self.vagas = vagas
+        self.tickets = []
 
-    # PARTE 6: faturamento e motos
+    def entrar(self, veiculo):
+        if len(self.tickets) >= self.vagas:
+            raise EstacionamentoLotadoError(f"{self.nome} lotado")
+        numero_ticket = len(self.tickets) + 1
+        novo_ticket = Ticket(numero_ticket, veiculo)
+        self.tickets.append(novo_ticket)
+        return novo_ticket
+
+    def faturamento(self):
+        total = 0
+        for ticket in self.tickets:
+            total += ticket.veiculo.valor()
+        return total
+
+    def motos(self):
+        contador = 0
+        for ticket in self.tickets:
+            if isinstance(ticket.veiculo, Moto):
+                contador += 1
+            return contador
+
 
 
 # ===== TESTE (não altere estas linhas) =====
@@ -168,6 +228,16 @@ print(f"chave: {Veiculo.total}-{gol.horas}-{recusas}-{shopping.faturamento()}-{s
 
 
 # ===== PARTE 7: o seu estacionamento (escreva aqui embaixo) =====
+meu_estacionamento = Estacionamento("Shopping Bougainville", vagas=3)
+
+meu_carro = Veiculo("GOI4N12", "Chevrolet Onix prata", 2)
+minha_moto = Moto("GYN7A34", "Honda CG 160 preta", 3)
+meu_caminhao = Caminhao("ANP2B56", "Scania R 450 azul", 3, 2)
+
+print(meu_estacionamento.entrar(meu_carro))
+print(meu_estacionamento.entrar(minha_moto))
+print(meu_estacionamento.entrar(meu_caminhao))
+print(f"Faturamento: R$ {meu_estacionamento.faturamento():.2f}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -176,3 +246,25 @@ print(f"chave: {Veiculo.total}-{gol.horas}-{recusas}-{shopping.faturamento()}-{s
 # 2. Envie este arquivo para a pasta aula-06. O nome tem que ser ex09.py.
 # ============================================================
 # SAÍDA:
+# ABC1D23 Gol · 3h · R$ 18.00
+# Veiculo('UNO2E34', 'Uno', 1)
+# 12.0
+# 0
+# recusado: o mínimo é 1 hora
+# recusado: o mínimo é 1 hora
+# 3 3
+# MOT0A12 CG 160 · 4h · R$ 12.00
+# CAM9Z87 Scania · 2h · R$ 36.00 · 3 eixos
+# 0
+# recusado: caminhão tem pelo menos 2 eixos
+# 4
+# True False
+# #1 ABC1D23 Gol · 3h · R$ 18.00
+# barrado: Shopping Flamboyant lotado
+# 3 66.0 0
+# chave: 0-3-4-66.0-0-40-False
+# 
+# #1 GOI4N12 Chevrolet Onix prata · 2h · R$ 12.00
+# #2 GYN7A34 Honda CG 160 preta · 3h · R$ 9.00
+# #3 ANP2B56 Scania R 450 azul · 2h · R$ 36.00
+# Faturamento: R$ 57.00
