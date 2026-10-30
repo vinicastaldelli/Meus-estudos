@@ -26,6 +26,76 @@
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 #   try/except ............. aula 04, slide 13  https://poo.leoad.com.br/aulas/aula-04/#s13
 
+class Instrumento:
+    def __init__(self, nome):
+        self._nome = nome
+
+    @property
+    def nome(self):
+        return self._nome
+
+    def som(self):
+        return "..."
+
+    def tocar(self):
+        return f"{self.nome} faz {self.som()}"
+
+    def __str__(self):
+        return self.tocar()
+
+class Violao(Instrumento):
+    def __init__(self):
+        super().__init__("Violao")
+
+    def som(self):
+        return "plim plim"
+    
+class Bateria(Instrumento):
+    def __init__(self):
+        super().__init__("Bateria")
+
+    def som(self):
+        return "tum tum"
+    
+class Flauta(Instrumento):
+    def __init__(self):
+        super().__init__("Flauta")
+
+    def som(self):
+        return "fiu fiu"
+
+instrumentos = [Violao(), Bateria(), Flauta()]
+
+for instrumento in instrumentos:
+    print(instrumento.tocar())
+
+class Sanfona(Instrumento):
+    def __init__(self):
+        super().__init__("Sanfona")
+
+    def som(self):
+        return "fom fom"
+
+instrumentos.append(Sanfona())
+
+for instrumento in instrumentos:
+    print(instrumento.tocar())
+
+violao = Violao()
+bateria = Bateria()
+
+print(violao.nome)
+print(violao.som())
+
+print(bateria.nome)
+print(bateria.som())
+
+print(violao)
+
+try:
+    violao.nome = "Guitarra"
+except AttributeError as erro:
+    print(f"Erro ao alterar o nome: {erro}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -34,3 +104,16 @@
 # 2. Envie este arquivo para a pasta aula-07. O nome tem que ser ex04.py.
 # ============================================================
 # SAÍDA:
+# Violao faz plim plim
+# Bateria faz tum tum
+# Flauta faz fiu fiu
+# Violao faz plim plim
+# Bateria faz tum tum
+# Flauta faz fiu fiu
+# Sanfona faz fom fom
+# Violao
+# plim plim
+# Bateria
+# tum tum
+# Violao faz plim plim
+# Erro ao alterar o nome: property 'nome' of 'Violao' object has no setter
