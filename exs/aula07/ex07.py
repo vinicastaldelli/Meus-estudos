@@ -27,6 +27,60 @@
 #   setter que recusa ...... aula 04, slide 19  https://poo.leoad.com.br/aulas/aula-04/#s19
 #   try/except ............. aula 04, slide 13  https://poo.leoad.com.br/aulas/aula-04/#s13
 
+class Email:
+    def __init__(self, endereco):
+        self.endereco = endereco
+
+    def enviar(self, msg):
+        return f"E-mail para {self.endereco}: {msg}"
+
+class Sms:
+    def __init__(self, numero):
+        self.numero = numero
+
+    @property
+    def numero(self):
+        return self._numero
+
+    @numero.setter
+    def numero(self, num):
+        if len(num) < 8:
+            raise ValueError("número inálido")
+        self._numero = num
+
+    def enviar(self, msg):
+        return f"SMS para {self.numero}: {msg}"
+
+class Telao:
+    def enviar(self, msg):
+        return f"Telao: {msg}"
+
+def avisar_todos(canais, msg):
+    textos = []
+    for canal in canais:
+        textos.append(canal.enviar(msg))
+    return textos
+
+class Pombo:
+    def enviar(self, msg):
+        return f"Pombo levou: {msg}"
+
+if __name__ == "__main__":
+    canais = [
+        Email("ana@email.com"),
+        Sms("62 99999-0000"),
+        Telao(),
+        Pombo(),
+    ]
+
+    mensagem = "Intervalo às 20h10"
+    for resultado in avisar_todos(canais, mensagem):
+        print(resultado)
+
+    try:
+        Sms("190")
+    except ValueError as e:
+        print(f"Erro capturado com sucesso: {e}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -35,3 +89,8 @@
 # 2. Envie este arquivo para a pasta aula-07. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# E-mail para ana@email.com: Intervalo às 20h10
+# SMS para 62 99999-0000: Intervalo às 20h10
+# Telao: Intervalo às 20h10
+# Pombo levou: Intervalo às 20h10
+# Erro capturado com sucesso: número inálido

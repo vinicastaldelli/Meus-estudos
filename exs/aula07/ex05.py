@@ -22,6 +22,44 @@
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 #   __repr__ ............... aula 02, slide 27  https://poo.leoad.com.br/aulas/aula-02/#s27
 
+class Vetor:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, outro):
+        if not isinstance(outro, Vetor):
+            return NotImplemented
+        return Vetor(self.x + outro.x, self.y + outro.y)
+    def __sub__(self, outro):
+        if not isinstance(outro, Vetor):
+            return NotImplemented
+        return Vetor(self.x - outro.x, self.y - outro.y)
+
+    def __eq__(self, outro):
+        if not isinstance(outro, Vetor):
+            return NotImplemented
+        return self.x == outro.x, self.y == outro.y
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+    def __repr__(self):
+        return f"Vetor({self.x}, {self.y})"
+
+v1 = Vetor(1, 2)
+v2 = Vetor(3, 4)
+v3 = v1 + v2
+
+print(v3)
+print(v1, v2)
+print([v1, v2, v3])
+print(Vetor(5, 5) - Vetor(1, 2))
+print(v1 == Vetor(1, 2))
+print(v1 == 5)
+print(v1)
+
+print(Vetor(1, 2) + 5)
 
 # ============================================================
 # PARA ENTREGAR
@@ -30,3 +68,15 @@
 # 2. Envie este arquivo para a pasta aula-07. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# (4, 6)
+# (1, 2) (3, 4)
+# [Vetor(1, 2), Vetor(3, 4), Vetor(4, 6)]
+# (4, 3)
+# (True, True)
+# False
+# (1, 2)
+# Traceback (most recent call last):
+#   File "c:\Meus-estudos\exs\aula07\ex05.py", line 62, in <module>
+#     print(Vetor(1, 2) + 5)
+#           ~~~~~~~~~~~~^~~
+# TypeError: unsupported operand type(s) for +: 'Vetor' and 'int'

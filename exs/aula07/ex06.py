@@ -30,6 +30,56 @@
 #   raise .................. aula 04, slide 10  https://poo.leoad.com.br/aulas/aula-04/#s10
 #   __repr__ ............... aula 02, slide 27  https://poo.leoad.com.br/aulas/aula-02/#s27
 
+class Playlist:
+    def __init__(self, nome):
+        self._nome = nome
+        self.musicas = []
+
+    @property
+    def nome(self):
+        return self._nome
+
+    def adicionar(self, musica):
+        if musica == "":
+            raise ValueError("música sem nome")
+        self.musicas.append(musica)
+
+    def __len__(self):
+        return len(self.musicas)
+
+    def __add__(self, outro):
+        if not isinstance(outro, Playlist):
+            return NotImplemented
+        nova = Playlist(f"{self.nome} + {outro.nome}")
+        nova.musicas = self.musicas + outro.musicas
+        return nova
+
+    def __lt__(self, outro):
+        if not isinstance(outro, Playlist):
+            return NotImplemented
+        return len(self) < len(outro)
+
+    def __repr__(self):
+        return f"Playlist('{self.nome}')"
+
+rock = Playlist("Rock")
+rock.adicionar("Tempo Perdido")
+rock.adicionar("Pais e Filhos")
+
+mpb = Playlist("MPB")
+mpb.adicionar("Aquarela")
+
+print(rock + mpb)
+print(len(rock + mpb))
+print(mpb < rock)
+print(len(rock))
+
+try:
+	rock.adicionar("")
+except ValueError as erro:
+	print(erro)
+
+print(len(rock))
 
 # ============================================================
 # PARA ENTREGAR
@@ -38,3 +88,9 @@
 # 2. Envie este arquivo para a pasta aula-07. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# Playlist('Rock + MPB')
+# 3
+# True
+# 2
+# música sem nome
+# 2

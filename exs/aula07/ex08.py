@@ -34,6 +34,82 @@
 #   construtor alternativo . aula 05, slide 27  https://poo.leoad.com.br/aulas/aula-05/#s27
 #   __str__ ................ aula 02, slide 25  https://poo.leoad.com.br/aulas/aula-02/#s25
 
+def mdc(a, b):
+	while b != 0:
+		resto = a % b
+		a = b
+		b = resto
+	return abs(a)
+
+class Fracao:
+    def __init__(self, numerador, denominador):
+        if denominador == 0:
+            raise ValueError("denominador não pode ser zero")
+        divisor = mdc(numerador, denominador)
+        numerador //= divisor
+        denominador //= divisor
+        if denominador < 0:
+             numerador = -numerador
+             denominador = -denominador
+        self._numerador = numerador
+        self._denominador = denominador
+
+    @property
+    def numerador(self):
+        return self._numerador
+
+    @property
+    def denominador(self):
+         return self._denominador
+
+    @classmethod
+    def de_texto(cls, texto):
+        numerador, denominador = texto.split("/")
+        return cls(int(numerador), int(denominador))
+
+    def __add__(self, outro):
+        if not isinstance(outro, Fracao):
+            return NotImplemented
+        return Fracao(self.numerador * outro.denominador + outro.numerador * self.denominador, self.denominador * outro.denominador,)
+
+    def __mul__(self, outro):
+        if not isinstance(outro, Fracao):
+            return NotImplemented
+        return Fracao(self.numerador * outro.numerador, self.denominador * outro.denominador)
+
+    def __eq__(self, outro):
+        if not isinstance(outro, Fracao):
+            return NotImplemented
+        return self.numerador == outro.numerador and self.denominador == outro.denominador
+
+    def __lt__(self, outro):
+        if not isinstance(outro, Fracao):
+            return NotImplemented
+        return self.numerador * outro.denominador < self.denominador * outro.denominador
+
+    def __str__(self):
+        return f"{self.numerador}/{self.denominador}"
+
+    def __repr__(self):
+        return f"Fracao({self.numerador}, {self.denominador})"
+
+if __name__ == "__main__":
+	metade = Fracao(1, 2)
+	terco = Fracao(1, 3)
+	print(Fracao(2, 4))
+	print(Fracao.de_texto("2/4"))
+	print(metade + terco)
+	print(Fracao(2, 3) * Fracao(3, 4))
+	print(metade == Fracao(3, 6))
+	print(metade == 0.5)
+	print(terco < metade)
+	print(repr(metade))
+	print("mdc(2, 4):", mdc(2, 4))
+	print("mdc(6, 9):", mdc(6, 9))
+	try:
+		Fracao(1, 0)
+	except ValueError as erro:
+		print(erro)
 
 # ============================================================
 # PARA ENTREGAR
@@ -42,3 +118,14 @@
 # 2. Envie este arquivo para a pasta aula-07. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# 1/2
+# 1/2
+# 5/6
+# 1/2
+# True
+# False
+# True
+# Fracao(1, 2)
+# mdc(2, 4): 2
+# mdc(6, 9): 3
+# denominador não pode ser zero
