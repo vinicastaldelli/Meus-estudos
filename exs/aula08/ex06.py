@@ -40,6 +40,65 @@
 
 from abc import ABC, abstractmethod
 
+class Forma(ABC):
+    def __init__(self, nome):
+        self.nome = nome
+
+    @abstractmethod
+    def area(self):
+        pass
+
+    @abstractmethod
+    def perimetro(self):
+        pass
+
+    def __str__(self):
+        return f"{self.nome}: área {self.area()}, perímetro {self.perimetro()}"
+
+class Retangulo(Forma):
+    def __init__(self, largura, altura):
+        super().__init__("Retângulo")
+        self.largura = largura
+        self.altura = altura
+
+    def area(self):
+        return self.largura * self.altura
+
+    def perimetro(self):
+        return 2 * (self.largura + self.altura)
+
+    def __repr__(self):
+        return f"Retangulo({self.largura}, {self.altura})"
+
+class Circulo(Forma):
+    def __init__(self, raio):
+        super().__init__("Círculo")
+        self.raio = raio
+
+    def area(self):
+        return 3.14 * self.raio *self.raio
+
+    def perimetro(self):
+        return 2 * 3.14 * self.raio
+
+    def __repr__(self):
+        return f"Circulo({self.raio})"
+
+def maior_area(formas):
+    maior = None
+    for forma in formas:
+        if maior is None or forma.area() > maior.area():
+            maior = forma
+    return maior
+
+retangulo = Retangulo(4, 3)
+circulo = Circulo(1)
+
+print(retangulo)
+print(circulo)
+print(maior_area([Retangulo(4, 3), Circulo(2), Retangulo(1, 1)]))
+print(maior_area([]))
+print([Retangulo(4, 3), Circulo(1)])
 
 # ============================================================
 # PARA ENTREGAR
@@ -48,3 +107,8 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-08. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# Retângulo: área 12, perímetro 14
+# Círculo: área 3.14, perímetro 6.28
+# Círculo: área 12.56, perímetro 12.56
+# None
+# [Retangulo(4, 3), Circulo(1)]

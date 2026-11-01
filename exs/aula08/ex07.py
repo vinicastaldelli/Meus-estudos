@@ -40,6 +40,58 @@
 
 from abc import ABC, abstractmethod
 
+class Produto(ABC):
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+    @property
+    def preco(self):
+        return self._preco
+
+    @preco.setter
+    def preco(self, valor):
+        if valor < 0:
+            raise ValueError("o preço não pode ser negativo")
+        self._preco = valor
+
+    @property
+    @abstractmethod
+    def imposto(self):
+        pass
+
+    @property
+    def preco_final(self):
+        return self.preco + self.preco * self.imposto / 100
+
+    def __str__(self):
+        return f"{self.nome}: R$ {self.preco_final:.2f} (imposto de {self.imposto}%)"
+
+    @classmethod
+    def de_texto(cls, texto):
+        nome, preco = texto.split(";")
+        return cls(nome, float(preco))
+
+class Alimento (Produto):
+    @property
+    def imposto(self):
+        return 5
+    
+class Eletronico (Produto):
+    @property
+    def imposto(self):
+        return 15
+
+print(Alimento("Arroz", 20).preco_final)
+print(Eletronico("Fone", 100).preco_final)
+print(Eletronico("Fone", 100))
+
+try:
+    Eletronico("Cabo", -5)
+except ValueError:
+    print("Preço recusado")
+
+print(Alimento.de_texto("Arroz;20"))
 
 # ============================================================
 # PARA ENTREGAR
@@ -48,3 +100,8 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-08. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# 21.0
+# 115.0
+# Fone: R$ 115.00 (imposto de 15%)
+# Preço recusado
+# Arroz: R$ 21.00 (imposto de 5%)

@@ -38,6 +38,62 @@
 
 from abc import ABC, abstractmethod
 
+class Veiculo(ABC):
+    def __init__(self, placa):
+        self._placa = placa
+
+    @property
+    def placa(self):
+        return self._placa
+
+    @property
+    @abstractmethod
+    def tarifa(self):
+        pass
+
+    def recibo(self):
+        return f"{self._placa}: R$ {self.tarifa():.2f}"
+
+class Carro(Veiculo):
+    def tarifa(self):
+        return 7.5
+
+class Moto(Veiculo):
+    def tarifa(self):
+        return 3.75
+
+class Caminhao(Veiculo):
+    def __init__(self, placa, eixos):
+        if eixos < 2:
+            raise ValueError("caminhão tem pelo menos 2 eixos")
+        super().__init__(placa)
+        self.eixos = eixos
+        
+    def tarifa(self):
+        return 7.5 * self.eixos
+    
+carro = Carro("ABS1D23")
+moto = Moto("MOT4E56")
+caminhao = Caminhao("CAM7F89", 3)
+
+print(carro.recibo())
+print(moto.recibo())
+print(caminhao.recibo())
+
+try:
+    Veiculo("XYZ0A00")
+except TypeError:
+    print("Veiculo recusado")
+
+try:
+    Caminhao("CAM0A01", 1)
+except ValueError:
+    print("Caminhao recusado")
+
+try:
+    carro.placa= "XXX0X00"
+except AttributeError:
+    print("Placa imutavel")
 
 # ============================================================
 # PARA ENTREGAR
@@ -46,3 +102,9 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-08. O nome tem que ser ex04.py.
 # ============================================================
 # SAÍDA:
+# ABS1D23: R$ 7.50
+# MOT4E56: R$ 3.75
+# CAM7F89: R$ 22.50
+# Veiculo recusado
+# Caminhao recusado
+# Placa imutavel

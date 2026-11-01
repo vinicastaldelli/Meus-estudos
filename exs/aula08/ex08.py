@@ -44,6 +44,83 @@
 
 from abc import ABC, abstractmethod
 
+class Personagem(ABC):
+    def __init__(self, nome):
+        self.nome = nome
+        self._vida = 100
+
+    @property
+    def vida(self):
+        return self._vida
+
+    @vida.setter
+    def vida(self, valor):
+        if valor < 0:
+            self._vida = 0
+        elif valor > 100:
+            self._vida = 100
+        else:
+            self._vida = valor
+
+    @property
+    @abstractmethod
+    def dano(self):
+        pass
+
+    def atacar(self, alvo):
+        alvo.vida -= self.dano
+        return f"{self.nome} ataca {alvo.nome}: {alvo.nome} fica com {alvo.vida} de vida"
+
+    def descansar(self):
+        self.vida += 10
+        return self.vida
+
+    def esta_vivo(self):
+        if self.vida > 0:
+            return True
+        return False
+
+class Guerreiro(Personagem):
+    @property
+    def dano(self):
+        return 15
+
+class Mago(Personagem):
+    def __init__(self, nome, mana):
+        super().__init__(nome)
+        self.mana = mana
+
+    @property
+    def dano(self):
+        if self.mana >= 10:
+            return 25
+        else:
+            return 5
+
+    def atacar(self, alvo):
+        ataque = super().atacar(alvo)
+        if self.mana >= 10:
+            self.mana -= 10
+        return ataque
+
+def batalha(a, b):
+    while True:
+        print(a.atacar(b))
+        if not b.esta_vivo():
+            return a.nome
+        print(b.atacar(a))
+        if not a.esta_vivo():
+            return b.nome
+
+thor = Guerreiro("Thor")
+merlin = Mago("Merlin", 30)
+
+print(thor.atacar(merlin))
+print(merlin.atacar(thor))
+print(merlin.mana)
+print(thor.descansar())
+
+print("Vencedor:", batalha(Guerreiro("Thor"), Mago("Merlin", 30)))
 
 # ============================================================
 # PARA ENTREGAR
@@ -52,3 +129,21 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-08. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# Thor ataca Merlin: Merlin fica com 85 de vida
+# Merlin ataca Thor: Thor fica com 75 de vida
+# 20
+# 85
+# Thor ataca Merlin: Merlin fica com 85 de vida
+# Merlin ataca Thor: Thor fica com 75 de vida
+# Thor ataca Merlin: Merlin fica com 70 de vida
+# Merlin ataca Thor: Thor fica com 50 de vida
+# Thor ataca Merlin: Merlin fica com 55 de vida
+# Merlin ataca Thor: Thor fica com 25 de vida
+# Thor ataca Merlin: Merlin fica com 40 de vida
+# Merlin ataca Thor: Thor fica com 20 de vida
+# Thor ataca Merlin: Merlin fica com 25 de vida
+# Merlin ataca Thor: Thor fica com 15 de vida
+# Thor ataca Merlin: Merlin fica com 10 de vida
+# Merlin ataca Thor: Thor fica com 10 de vida
+# Thor ataca Merlin: Merlin fica com 0 de vida
+# Vencedor: Thor

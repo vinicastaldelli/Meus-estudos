@@ -39,6 +39,51 @@
 
 from abc import ABC, abstractmethod
 
+class Notificacao(ABC):
+    enviadas = 0
+    def __init__(self, destino):
+        self.destino = destino
+
+    @property
+    @abstractmethod
+    def canal(self):
+        pass
+
+    @abstractmethod
+    def formatar(self, mensagem):
+        return self.canal
+
+    def enviar(self, mensagem):
+        Notificacao.enviadas += 1
+        return f"[{self.canal}] para {self.destino}: {self.formatar(mensagem)}"
+
+class Email(Notificacao):
+    @property
+    def canal(self):
+        return "E-mail"
+
+    def formatar(self, mensagem):
+        return f"Olá! {mensagem}"
+
+class SMS(Notificacao):
+    @property
+    def canal(self):
+        return "SMS"
+
+    def formatar(self, mensagem):
+        return f"{mensagem} Responda SAIR para cancelar."
+
+notificacoes = [
+    Email("ana@email.com"),
+    SMS("62 99999-0000"),
+]
+
+mensagem = "A aula começa às 18h35."
+
+for notificacao in notificacoes:
+    print(notificacao.enviar(mensagem))
+
+print(f"Total de envios: {Notificacao.enviadas}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -47,3 +92,6 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-08. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# [E-mail] para ana@email.com: Olá! A aula começa às 18h35.
+# [SMS] para 62 99999-0000: A aula começa às 18h35. Responda SAIR para cancelar.
+# Total de envios: 2
