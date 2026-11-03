@@ -9,7 +9,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 SCOPES = ["https://www.googleapis.com/auth/youtube"]
-ID_PLAYLIST_ALVO = "PLM3ZOk63kdT0"
+ID_PLAYLIST_ALVO = "PLQpfkcWZ2GEU"
 
 
 def autenticar_youtube():
@@ -134,7 +134,7 @@ def adicionar_novos_videos():
 
     # Data limite: exatamente 5 meses atrás
     agora = datetime.datetime.now(datetime.timezone.utc)
-    data_limite = agora - datetime.timedelta(days=5 * 30)
+    data_limite = agora - datetime.timedelta(days=6 * 30)
     print(f"Buscando vídeos postados após: {data_limite.strftime('%d/%m/%Y')}")
 
     todos_os_videos = []
