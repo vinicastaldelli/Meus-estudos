@@ -29,6 +29,49 @@
 
 from abc import ABC, abstractmethod
 
+class Imovel(ABC):
+    def __init__(self, endereco, area):
+        self.endereco = endereco
+        self.area = area
+
+    @abstractmethod
+    def aluguel(self):
+        pass
+
+    def __str__(self):
+        return f"{self.endereco}, {self.area}m²: R$ {self.aluguel():.2f}"
+
+class Casa(Imovel):
+    def __init__(self, endereco, area, quintal = False):
+        super().__init__(endereco, area)
+        self.quintal = quintal
+
+    def aluguel(self):
+        valor = self.area * 20
+        if self.quintal:
+            valor += 300
+        return valor
+
+class Apartamento(Imovel):
+    def __init__(self, endereco, area, condominio):
+        super().__init__(endereco, area)
+        self.condominio = condominio
+
+    def aluguel(self):
+        valor = self.area * 25 + self.condominio
+        return valor
+
+try:
+    Imovel("Rua 1", 50)
+except TypeError:
+    print("Imovel recusado")
+
+
+casa = Casa("Rua das Flores, 10", 100, True)
+apartamento = Apartamento("Av. Central, 200", 80, 500)
+
+print(casa)
+print(apartamento)
 
 # ============================================================
 # PARA ENTREGAR
@@ -37,3 +80,6 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# Imovel recusado
+# Rua das Flores, 10, 100m²: R$ 2300.00
+# Av. Central, 200, 80m²: R$ 2500.00

@@ -74,3 +74,10 @@ print(f"chave: {Pizza.total}-{frango.com_entrega()}-{len(str(calabresa))}-{len(r
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex01.py.
 # ============================================================
 # SAÍDA:
+# Pizza Calabresa (G): R$ 54.90
+# Pizza('Frango com catupiry', 'M', 42.0)
+# 50.0
+# 54.9
+# 2
+# preço só de leitura
+# chave: 2-50.0-29-39-54.9

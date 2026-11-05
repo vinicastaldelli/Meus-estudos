@@ -21,6 +21,51 @@
 #   setter que recusa ...... aula 04, slide 19  https://poo.leoad.com.br/aulas/aula-04/#s19
 #   construtor alternativo . aula 05, slide 27  https://poo.leoad.com.br/aulas/aula-05/#s27
 
+class Sensor:
+    limite = 40
+    total = 0
+    
+    def __init__(self, local, temperatura):
+        self.local = local
+        self.temperatura = temperatura
+        Sensor.total += 1
+
+    @property
+    def temperatura(self):
+        return self._temperatura
+
+    @temperatura.setter
+    def temperatura(self, valor):
+        if valor < -50:
+            raise ValueError("temperatura impossível")
+        self._temperatura = valor
+
+    @classmethod
+    def de_texto(cls, texto):
+        local, temperatura = texto.split(";")
+        return cls(local, float(temperatura))
+
+    def alerta(self):
+        return self.temperatura > self.limite
+
+    def __str__(self):
+        return f"{self.local}: {self.temperatura:.2f} graus"
+
+    def __repr__(self):
+        return f"Sensor('{self.local}', {self.temperatura:.2f})"
+
+sensor1 = Sensor("Estufa", 45)
+sensor2 = Sensor.de_texto("Sala;32")
+
+print(f"{sensor1}: alerta = {sensor1.alerta()}")
+print(f"{sensor2}: alerta = {sensor2.alerta()}")
+
+try:
+    sensor_recusado = Sensor("Congelador", -60)
+except ValueError as erro:
+    print(f"Sensor recusado: {erro}")
+
+print(f"Total de sensores criados: {Sensor.total}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -29,3 +74,7 @@
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# Estufa: 45.00 graus: alerta = True
+# Sala: 32.00 graus: alerta = False
+# Sensor recusado: temperatura impossível
+# Total de sensores criados: 2

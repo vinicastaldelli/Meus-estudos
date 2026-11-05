@@ -82,3 +82,11 @@ print(f"chave: {len(comanda.itens)}-{comanda.total()}-{comanda.com_servico()}-{c
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex02.py.
 # ============================================================
 # SAÍDA:
+# 2
+# 36
+# 81
+# 89.1
+# True
+# True
+# 0 0
+# chave: 2-81-89.1-Jorge-True-0

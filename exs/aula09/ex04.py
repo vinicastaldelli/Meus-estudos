@@ -23,6 +23,54 @@
 #   linhas do diagrama ..... aula 09, slide 15  https://poo.leoad.com.br/aulas/aula-09/#s15
 #   composição ............. aula 05, slide 42  https://poo.leoad.com.br/aulas/aula-05/#s42
 
+class Treino:
+    def __init__(self, tipo, minutos):
+        self.tipo = tipo
+        self.minutos = minutos
+
+class Aluno:
+    def __init__(self, nome, treinos):
+        self.nome = nome
+        self.treinos = []
+
+    def novo_treino(self, tipo, minutos):
+        treino = Treino(tipo, minutos)
+        self.treinos.append(treino)
+
+    def minutos(self):
+        soma = 0
+        for treino in self.treinos:
+            soma += treino.minutos
+        return soma
+
+class Academia:
+    def __init__(self, nome, alunos):
+        self.nome = nome
+        self.alunos = alunos
+
+    def matricular(self, aluno):
+        self.alunos.append(aluno)
+
+    def minutos_totais(self):
+        soma = 0
+        for aluno in self.alunos:
+            soma += aluno.minutos()
+        return soma
+
+ana = Aluno("Ana", [])
+ana.novo_treino("musculação", 60)
+ana.novo_treino("esteira", 30)
+
+bruno = Aluno("Bruno", [])
+bruno.novo_treino("natação", 45)
+
+academia = Academia("Academia", [])
+academia.matricular(ana)
+academia.matricular(bruno)
+
+print("Minutos da Ana:", ana.minutos())
+print("Minutos do Bruno:", bruno.minutos())
+print("Minutos totais:", academia.minutos_totais())
 
 # ============================================================
 # PARA ENTREGAR
@@ -31,3 +79,6 @@
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex04.py.
 # ============================================================
 # SAÍDA:
+# Minutos da Ana: 90
+# Minutos do Bruno: 45
+# Minutos totais: 135

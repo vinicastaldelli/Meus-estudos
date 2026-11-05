@@ -85,3 +85,10 @@ print(f"chave: {pix.total()}-{cartao.total()}-{soma_totais([pix, cartao])}-{len(
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex03.py.
 # ============================================================
 # SAÍDA:
+# R$ 150.00
+# R$ 212.00 em 3x
+# 12.0
+# 362.0
+# True
+# 1
+# chave: 150-212.0-362.0-15-1
