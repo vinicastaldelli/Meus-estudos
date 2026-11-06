@@ -28,6 +28,91 @@
 
 from abc import ABC, abstractmethod
 
+class PetShop:
+    def __init__(self, nome):
+        self.nome = nome
+        self.clientes = []
+
+    def cadastrar(self, nome):
+        cliente = Cliente(nome)
+        self.clientes.append(cliente)
+        return cliente
+
+    def buscar(self, nome):
+        for cliente in self.clientes:
+            if cliente.nome == nome:
+                return cliente
+        raise ClienteNaoEncontradoError(nome)
+
+
+class Cliente:
+    def __init__(self, nome):
+        self.nome = nome
+        self.pets = []
+
+    def adicionar(self, pet):
+        self.pets.append(pet)
+
+    def total_banhos(self):
+        return sum(pet.banho() for pet in self.pets)
+
+
+class Pet(ABC):
+    def __init__(self, nome):
+        self.nome = nome
+
+    @abstractmethod
+    def banho(self):
+        pass
+
+    @abstractmethod
+    def especie(self):
+        pass
+
+    def __str__(self):
+        return f"{self.nome} ({self.especie()})"
+
+
+class Cachorro(Pet):
+    def __init__(self, nome, porte):
+        super().__init__(nome)
+        self.porte = porte
+
+    def banho(self):
+        return 60 if self.porte == "pequeno" else 90
+
+    def especie(self):
+        return "cachorro"
+
+
+class Gato(Pet):
+    def banho(self):
+        return 50
+
+    def especie(self):
+        return "gato"
+
+
+class ClienteNaoEncontradoError(Exception):
+    pass
+
+
+petshop = PetShop("Amigo Fiel")
+cliente_ana = petshop.cadastrar("Ana")
+cliente_bruno = petshop.cadastrar("Bruno")
+
+cliente_ana.adicionar(Cachorro("Rex", "pequeno"))
+cliente_ana.adicionar(Gato("Mimi"))
+cliente_bruno.adicionar(Cachorro("Thor", "grande"))
+
+print(f"Total de banhos de {cliente_ana.nome}: R$ {cliente_ana.total_banhos()}")
+print(f"Total de banhos de {cliente_bruno.nome}: R$ {cliente_bruno.total_banhos()}")
+print(f"Pets de {cliente_ana.nome}: " + ", ".join(str(pet) for pet in cliente_ana.pets))
+
+try:
+    petshop.buscar("Carla")
+except ClienteNaoEncontradoError as erro:
+    print(f"Cliente nao encontrado: {erro}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -36,3 +121,7 @@ from abc import ABC, abstractmethod
 # 2. Envie este arquivo para a pasta aula-09. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# Total de banhos de Ana: R$ 110
+# Total de banhos de Bruno: R$ 90
+# Pets de Ana: Rex (cachorro), Mimi (gato)
+# Cliente nao encontrado: Carla
