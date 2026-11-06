@@ -22,6 +22,28 @@
 #   f × f() ................ aula 10, slide 8  https://poo.leoad.com.br/aulas/aula-10/#s8
 #   função como argumento .. aula 10, slide 11  https://poo.leoad.com.br/aulas/aula-10/#s11
 
+def eh_par(n):
+    return n % 2 == 0
+    
+def eh_positivo(n):
+    return n > 0
+    
+def eh_grande(n):
+    return n > 10
+
+def filtrar(numeros, regra):
+    resultado = []
+    for numero in numeros:
+        if regra(numero):
+            resultado.append(numero)
+    return resultado
+
+numeros = [3, -2, 8, 15, -7, 10]
+
+print(filtrar(numeros, eh_par))
+print(filtrar(numeros, eh_positivo))
+print(filtrar(numeros, eh_grande))
+print(filtrar([], eh_par))
 
 # ============================================================
 # PARA ENTREGAR
@@ -30,3 +52,7 @@
 # 2. Envie este arquivo para a pasta aula-10. O nome tem que ser ex04.py.
 # ============================================================
 # SAÍDA:
+# [-2, 8, 10]
+# [3, 8, 15, 10]
+# [15]
+# []

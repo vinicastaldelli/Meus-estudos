@@ -29,22 +29,46 @@
 #   dicionário no __init__ . aula 10, slide 42  https://poo.leoad.com.br/aulas/aula-10/#s42
 #   max e min .............. aula 10, slide 26  https://poo.leoad.com.br/aulas/aula-10/#s26
 
-
 class Aluno:
     def __init__(self, matricula, nome, media):
         self.matricula = matricula
         self.nome = nome
-        self.media = media    # passa pelo setter
+        self.media = media
 
-    # escreva aqui a property media, o setter e o __str__
+    @property
+    def media(self):
+        return self._media
+
+    @media.setter
+    def media(self, valor):
+        if valor < 0 or valor > 10:
+            raise ValueError("a média vai de 0 a 10")
+        self._media = valor
+
+    def __str__(self):
+        return f"{self.nome} ({self.matricula}): média {self.media}"
 
     def __repr__(self):
         return f"Aluno('{self.matricula}', '{self.nome}', {self.media})"
 
-
 class RepositorioAlunos:
-    pass  # apague este pass quando escrever o __init__
+    def __init__(self):
+        self._alunos = {}
 
+    def adicionar(self, aluno):
+        self._alunos[aluno.matricula] = aluno
+
+    def buscar(self, matricula):
+        return self._alunos.get(matricula)
+
+    def remover(self, matricula):
+        self._alunos.pop(matricula, None) is not None
+
+    def quantidade(self):
+        return len(self._alunos)
+
+    def melhor(self):
+        return max(self._alunos.values(), key=lambda aluno: aluno.media)
 
 # ===== TESTE (não altere estas linhas) =====
 repo = RepositorioAlunos()
@@ -87,3 +111,14 @@ print(f"chave: {repo.quantidade()}-{repo.buscar('2026001').nome}-{repo.melhor().
 # 2. Envie este arquivo para a pasta aula-10. O nome tem que ser ex03.py.
 # ============================================================
 # SAÍDA:
+# 3
+# Bruno (2026002): média 6.0
+# None
+# Caio
+# None
+# None
+# Ana
+# a média vai de 0 a 10
+# 8.5
+# 0
+# chave: 2-Ana-8.5-None-None-0-2-26
