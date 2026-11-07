@@ -33,6 +33,38 @@
 #   comprehension .......... aula 10, slide 27  https://poo.leoad.com.br/aulas/aula-10/#s27
 #   sum .................... aula 10, slide 28  https://poo.leoad.com.br/aulas/aula-10/#s28
 
+class Produto:
+    def __init__(self, nome, preco, estoque):
+        self.nome = nome
+        self.preco = preco
+        self.estoque = estoque
+
+    def __repr__(self):
+        return f"Produto('{self.nome}', {self.preco}, {self.estoque})"
+
+def mais_barato(produtos):
+    return min(produtos, key=lambda produto: produto.preco)
+
+def por_preco(produtos):
+    return sorted(produtos, key=lambda produto: produto.preco, reverse=True)
+
+def valor_do_estoque(produtos):
+    return sum(p.preco * p.estoque for p in produtos)
+
+def em_falta(produtos):
+    return [p.nome for p in produtos if p.estoque == 0]
+
+produtos = [
+    Produto("Caneca", 35, 12),
+    Produto("Boné", 42, 0),
+    Produto("Camiseta", 59.9, 5),
+    Produto("Chaveiro", 15, 0),
+]
+
+print("Mais barato:", mais_barato(produtos))
+print("Por preço:", por_preco(produtos))
+print("Valor do estoque:", valor_do_estoque(produtos))
+print("Em falta:", em_falta(produtos))
 
 # ============================================================
 # PARA ENTREGAR
@@ -41,3 +73,7 @@
 # 2. Envie este arquivo para a pasta aula-10. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# Mais barato: Produto('Chaveiro', 15, 0)
+# Por preço: [Produto('Camiseta', 59.9, 5), Produto('Boné', 42, 0), Produto('Caneca', 35, 12), Produto('Chaveiro', 15, 0)]
+# Valor do estoque: 719.5
+# Em falta: ['Boné', 'Chaveiro']

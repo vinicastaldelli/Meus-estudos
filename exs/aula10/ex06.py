@@ -24,6 +24,20 @@
 #   max e min .............. aula 10, slide 26  https://poo.leoad.com.br/aulas/aula-10/#s26
 #   lambda ................. aula 10, slide 24  https://poo.leoad.com.br/aulas/aula-10/#s24
 
+def contar_votos(votos):
+    contagem = {}
+    for nome in votos:
+        contagem[nome] = contagem.get(nome, 0) + 1
+    return contagem
+
+def vencedor(contagem):
+    return max(contagem, key=lambda nome: contagem[nome])
+
+votos = ["Ana", "Bia", "Ana", "Caio", "Ana", "Bia"]
+
+print(contar_votos(votos))
+print(vencedor(contar_votos(votos)))
+print(contar_votos([]))
 
 # ============================================================
 # PARA ENTREGAR
@@ -32,3 +46,6 @@
 # 2. Envie este arquivo para a pasta aula-10. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# {'Ana': 3, 'Bia': 2, 'Caio': 1}
+# Ana
+# {}
