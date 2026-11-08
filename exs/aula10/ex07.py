@@ -31,6 +31,50 @@
 #   sorted com key ......... aula 10, slide 19  https://poo.leoad.com.br/aulas/aula-10/#s19
 #   lambda ................. aula 10, slide 24  https://poo.leoad.com.br/aulas/aula-10/#s24
 
+class Contato:
+    def __init__(self, nome, telefone):
+        self.nome = nome
+        self.telefone = telefone
+
+    def __repr__(self):
+        return f"Contato('{self.nome}', '{self.telefone}')"
+
+class Agenda:
+    def __init__(self):
+        self.contatos = {}
+
+    def adicionar(self, contato):
+        if contato.nome in self.contatos:
+            raise ValueError(f"contato repetido: {contato.nome}")
+        self.contatos[contato.nome] = contato
+
+    def buscar(self, nome):
+        return self.contatos.get(nome)
+
+    def remover(self, nome):
+        if nome not in self.contatos:
+            return False
+        del self.contatos[nome]
+        return True
+
+    def listar(self):
+        return sorted(self.contatos.values(), key=lambda contato: contato.nome)
+
+agenda = Agenda()
+
+agenda.adicionar(Contato("Caio", "62 99999-0003"))
+agenda.adicionar(Contato("Ana", "62 99999-0001"))
+agenda.adicionar(Contato("Bia", "62 99999-0002"))
+
+print("Contatos:", agenda.listar())
+print('Buscar Duda:', agenda.buscar("Duda"))
+print('Remover Caio:', agenda.remover("Caio"))
+print('Remover Caio novamente:', agenda.remover("Caio"))
+
+try:
+    agenda.adicionar(Contato("Ana", "62 98888-0000"))
+except ValueError as erro:
+    print(erro)
 
 # ============================================================
 # PARA ENTREGAR
@@ -39,3 +83,8 @@
 # 2. Envie este arquivo para a pasta aula-10. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# Contatos: [Contato('Ana', '62 99999-0001'), Contato('Bia', '62 99999-0002'), Contato('Caio', '62 99999-0003')]
+# Buscar Duda: None
+# Remover Caio: True
+# Remover Caio novamente: False
+# contato repetido: Ana

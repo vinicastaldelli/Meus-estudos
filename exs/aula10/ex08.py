@@ -46,6 +46,83 @@
 #   sum .................... aula 10, slide 28  https://poo.leoad.com.br/aulas/aula-10/#s28
 #   max e min .............. aula 10, slide 26  https://poo.leoad.com.br/aulas/aula-10/#s26
 
+class Prato:
+    def __init__(self, codigo, nome, preco):
+        self.codigo = codigo
+        self.nome = nome
+        self.preco = preco
+
+    def __repr__(self):
+        return f"Prato('{self.codigo}', '{self.nome}', {self.preco})"
+
+class Cardapio:
+    def __init__(self):
+        self.pratos = {}
+
+    def adicionar(self, prato):
+        self.pratos[prato.codigo] = prato
+
+    def buscar(self, codigo):
+        return self.pratos.get(codigo, None)
+
+    def existe(self, codigo):
+        return codigo in self.pratos
+
+def sem_desconto(valor):
+    return valor
+
+def dez_por_cento(valor):
+    return valor * 0.9
+
+def menos_cinco(valor):
+    return max(0, valor - 5)
+
+class Pedido:
+    def __init__(self, cardapio, regra):
+        self.cardapio = cardapio
+        self.regra = regra
+        self.codigos = []
+
+    def pedir(self, codigo):
+        if not self.cardapio.existe(codigo):
+            raise ValueError(f"código não existe no cardápio: {codigo}")
+        self.codigos.append(codigo)
+
+    def subtotal(self):
+        return sum(self.cardapio.buscar(cod).preco for cod in self.codigos)
+
+    def total(self):
+        return self.regra(self.subtotal())
+
+    def mais_caro(self):
+        if not self.codigos:
+            return None
+        pratos_pedidos = [self.cardapio.buscar(cod) for cod in self.codigos]
+        return max(pratos_pedidos, key=lambda prato: prato.preco)
+
+if __name__ == "__main__":
+    cardapio = Cardapio()
+    cardapio.adicionar(Prato("P1", "Pamonha", 12))
+    cardapio.adicionar(Prato("P2", "Pastel", 9))
+    cardapio.adicionar(Prato("P3", "Galinhada", 32))
+
+    pedido = Pedido(cardapio, dez_por_cento)
+        
+    pedido.pedir("P1")
+    pedido.pedir("P3")
+    pedido.pedir("P2")
+        
+    print(f"Subtotal: {pedido.subtotal()}")
+    print(f"Total (10%): {pedido.total()}")
+    print(f"Mais caro: {pedido.mais_caro()}")
+
+    pedido.regra = menos_cinco
+    print(f"Total (-5 reais): {pedido.total()}")
+
+    try:
+        pedido.pedir("P9")
+    except ValueError as e:
+        print(f"Erro capturado com sucesso: {e}")
 
 # ============================================================
 # PARA ENTREGAR
@@ -54,3 +131,8 @@
 # 2. Envie este arquivo para a pasta aula-10. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# Subtotal: 53
+# Total (10%): 47.7
+# Mais caro: Prato('P3', 'Galinhada', 32)
+# Total (-5 reais): 48
+# Erro capturado com sucesso: código não existe no cardápio: P9
