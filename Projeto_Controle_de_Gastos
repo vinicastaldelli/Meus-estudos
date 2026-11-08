@@ -1,0 +1,131 @@
+from abc import ABC, abstractmethod
+
+class TransacaoNaoEncontradaError(Exception):
+    pass
+
+class Transacao(ABC):
+    def __init__(self, descricao, valor):
+        self.descricao = descricao
+        self.valor = valor
+
+    @property
+    def descricao(self):
+        return self._descricao
+
+    @descricao.setter
+    def descricao(self, novo_valor):
+        if not novo_valor or not novo_valor.strip():
+            raise ValueError("A descrição não pode ser vazia.")
+        self._descricao = novo_valor.strip()
+
+    @property
+    def valor(self):
+        return self._valor
+
+    @valor.setter
+    def valor(self, novo_valor):
+        if novo_valor <= 0:
+            raise ValueError("O valor da transação deve ser estritamente maior que zero.")
+        self._valor = float(novo_valor)
+
+    @abstractmethod
+    def calcular_impacto(self):
+        """Método abstrato que define como a transação afeta o saldo total."""
+        pass
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(descricao='{self.descricao}', valor={self.valor})"
+
+class Receita(Transacao):
+    def calcular_impacto(self):
+        return self.valor
+
+    def __str__(self):
+        return f"Receita: {self.descricao} (+R$ {self.valor:.2f})"
+
+class Despesa(Transacao):
+    def __init__(self, descricao, valor, categoria):
+        super().__init__(descricao, valor)
+        self.categoria = categoria
+
+    @property
+    def categoria(self):
+        return self._categoria
+
+    @categoria.setter
+    def categoria(self, nova_categoria):
+        if not nova_categoria or not nova_categoria.strip():
+            raise ValueError("A categoria da despesa não pode ser vazia.")
+        self._categoria = nova_categoria.strip()
+
+    def calcular_impacto(self):
+        return -self.valor
+
+    def __str__(self):
+        return f"Despesa [{self.categoria}]: {self.descricao} (-R$ {self.valor:.2f})"
+
+    def __repr__(self):
+        return f"Despesa(descricao='{self.descricao}', valor={self.valor}, categoria='{self.categoria}')"
+
+class CarteiraFinancas:
+    def __init__(self):
+        self._transacoes = []
+
+    def adicionar(self, transacao):
+        self._transacoes.append(transacao)
+
+    def buscar_por_descricao(self, termo):
+        for t in self._transacoes:
+            if termo.lower() in t.descricao.lower():
+                return t
+        raise TransacaoNaoEncontradaError(f"Nenhuma transação encontrada com o termo: '{termo}'")
+
+    def calcular_saldo_total(self):
+        total = 0
+        for t in self._transacoes:
+            total += t.calcular_impacto()
+            return total
+
+    def __str__(self):
+        return f"Carteira com {len(self._transacoes)} transação(ões) registrada(s)."
+
+if __name__ == "__main__":
+    minha_carteira = CarteiraFinancas()
+    print(minha_carteira)
+
+    salario = Receita("Salário Mensal", 5000)
+    aluguel = Despesa("Aluguel Apto", 1800, "Moradia")
+    supermercado = Despesa("Compras do Mês", 650, "Alimentação")
+    freela = Receita("Projeto Web Extra", 1200)
+
+    minha_carteira.adicionar(salario)
+    minha_carteira.adicionar(aluguel)
+    minha_carteira.adicionar(supermercado)
+    minha_carteira.adicionar(freela)
+
+    print(minha_carteira)
+    print(salario)
+    print(aluguel)
+    print(repr(supermercado))
+
+    saldo_final = minha_carteira.calcular_saldo_total()
+    print(f"Saldo Total Atual: R$ {saldo_final:.2f}")
+    print(f"Saldo Total: R$ {saldo_final:.2f}")
+
+    encontrada = minha_carteira.buscar_por_descricao("Aluguel")
+    print(f"Busca realizada com sucesso: {encontrada}")
+
+    try:
+        minha_carteira.buscar_por_descricao("Cinema")
+    except TransacaoNaoEncontradaError as e:
+        print(f"Erro capturado com sucesso: {e}")
+
+    try:
+        errado = Receita("Bônus", -100)
+    except ValueError as e:
+        print(f"Validação de valor funcionou: {e}")
+
+    try:
+        aluguel.descricao = "   "
+    except ValueError as e:
+        print(f"Validação de descrição funcionou: {e}")
