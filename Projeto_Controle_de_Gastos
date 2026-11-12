@@ -7,7 +7,7 @@ class Transacao(ABC):
     def __init__(self, descricao, valor):
         self.descricao = descricao
         self.valor = valor
-
+        
     @property
     def descricao(self):
         return self._descricao
