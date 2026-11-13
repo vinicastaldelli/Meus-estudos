@@ -1,0 +1,17 @@
+[
+  {
+    "nome": "Caneta",
+    "preco": 2.5,
+    "quantidade": 100
+  },
+  {
+    "nome": "Caderno",
+    "preco": 25,
+    "quantidade": 10
+  },
+  {
+    "nome": "Borracha",
+    "preco": 1.5,
+    "quantidade": 40
+  }
+]

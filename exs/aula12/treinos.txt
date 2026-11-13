@@ -1,0 +1,8 @@
+corrida;30
+natação;45
+corrida;40
+bike;60
+corrida;30
+natação;45
+corrida;40
+bike;60

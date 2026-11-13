@@ -27,6 +27,57 @@
 #   dicionário ............. aula 10, slide 33  https://poo.leoad.com.br/aulas/aula-10/#s33
 #   [ ] × .get() ........... aula 10, slide 34  https://poo.leoad.com.br/aulas/aula-10/#s34
 
+from pathlib import Path
+
+class Treino:
+    def __init__(self, atividade, minutos):
+        self.atividade = atividade
+        self.minutos = minutos
+
+    def para_linha(self):
+        return f"{self.atividade};{self.minutos}"
+
+    @classmethod
+    def de_linha(cls, linha):
+        atividade, minutos = linha.strip().split(";")
+        return cls(atividade, int(minutos))
+
+def Anotar(treino, caminho):
+    with open(caminho, "a", encoding="utf-8") as arquivo:
+        arquivo.write(treino.para_linha() + "\n")
+
+def carregar(caminho):
+    treino = []
+    try:
+        with open(caminho, "r", encoding="utf-8") as arquivo:
+            for linha in arquivo:
+                if linha.strip():
+                    treino.append(Treino.de_linha(linha))
+    except FileNotFoundError:
+        return []
+    return treino
+
+def minutos_por_atividade(treinos):
+    totais = {}
+    for treino in treinos:
+        atividade = treino.atividade
+        totais[atividade] = totais.get(atividade, 0) + treino.minutos
+    return totais
+
+caminho = Path(__file__).parent / "treinos.txt"
+
+novos_treinos = [
+    Treino("corrida", 30),
+    Treino("natação", 45),
+    Treino("corrida", 40),
+    Treino("bike", 60),
+]
+
+for treino in novos_treinos:
+    Anotar(treino, caminho)
+
+treinos_carregados = carregar(caminho)
+print(minutos_por_atividade(treinos_carregados))
 
 # ============================================================
 # PARA ENTREGAR
@@ -35,3 +86,4 @@
 # 2. Envie este arquivo para a pasta aula-12. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# {'corrida': 70, 'natação': 45, 'bike': 60}

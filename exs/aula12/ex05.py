@@ -55,6 +55,31 @@ class Produto:
         return f"Produto('{self.nome}', {self.preco}, {self.quantidade})"
 
 def salvar_produtos(produtos, caminho):
+    lista = [produto.para_dict() for produto in produtos]
+    with open(caminho, "w", encoding="utf-8") as arquivo:
+        json.dump(lista, arquivo, ensure_ascii=False, indent=2)
+
+def carregar_produtos(caminho):
+    try:
+        with open(caminho, "r", encoding="utf-8") as arquivo:
+            lista = json.load(arquivo)
+    except FileNotFoundError:
+        return []
+    return [Produto.de_dict(item) for item in lista]
+
+PASTA = Path(__file__).parent
+caminho = PASTA / "produtos.json"
+
+produtos = [
+    Produto("Caneta", 2.5, 100),
+    Produto("Caderno", 25, 10),
+    Produto("Borracha", 1.5, 40),
+]
+
+salvar_produtos(produtos, caminho)
+produtos_carregados = carregar_produtos(caminho)
+print(produtos_carregados)
+print(sum(produto.valor_em_estoque() for produto in produtos_carregados))
 
 # ============================================================
 # PARA ENTREGAR
@@ -63,3 +88,5 @@ def salvar_produtos(produtos, caminho):
 # 2. Envie este arquivo para a pasta aula-12. O nome tem que ser ex05.py.
 # ============================================================
 # SAÍDA:
+# [Produto('Caneta', 2.5, 100), Produto('Caderno', 25, 10), Produto('Borracha', 1.5, 40)]
+# 560.0
