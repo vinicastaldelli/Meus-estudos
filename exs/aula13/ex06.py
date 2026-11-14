@@ -25,6 +25,41 @@
 #   callback ............... aula 13, slide 29  https://poo.leoad.com.br/aulas/aula-13/#s29
 #   Observer ............... aula 13, slide 31  https://poo.leoad.com.br/aulas/aula-13/#s31
 
+class Sensor:
+    def __init__(self, local):
+        self.local = local
+        self.ultima = None
+        self.avisos = []
+
+    def inscrever(self, funcao):
+        self.avisos.append(funcao)
+
+    def medir(self, temperatura):
+        self.ultima = temperatura
+        for aviso in self.avisos:
+            aviso(temperatura)
+
+def alerta_calor(t):
+    if t > 30:
+        print(f"Calor! {t} graus")
+
+def alerta_frio(t):
+    if t < 10:
+        print(f"Frio! {t} graus")
+
+def painel(t):
+    print(f"Painel: {t} graus")
+
+sensor = Sensor("Estufa")
+sensor.inscrever(alerta_calor)
+sensor.inscrever(alerta_frio)
+sensor.inscrever(painel)
+
+sensor.medir(35)
+sensor.medir(8)
+sensor.medir(22)
+
+print("Última:", sensor.ultima)
 
 # ============================================================
 # PARA ENTREGAR
@@ -33,3 +68,9 @@
 # 2. Envie este arquivo para a pasta aula-13. O nome tem que ser ex06.py.
 # ============================================================
 # SAÍDA:
+# Calor! 35 graus
+# Painel: 35 graus
+# Frio! 8 graus
+# Painel: 8 graus
+# Painel: 22 graus
+# Última: 22

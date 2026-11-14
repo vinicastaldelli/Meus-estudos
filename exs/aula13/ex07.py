@@ -26,6 +26,38 @@
 #   try/except ............. aula 04, slide 13  https://poo.leoad.com.br/aulas/aula-04/#s13
 #   except ... as erro ..... aula 04, slide 15  https://poo.leoad.com.br/aulas/aula-04/#s15
 
+def somar(a, b):
+    return a + b
+
+def subtrair(a, b):
+    return a - b
+
+def multiplicar(a, b):
+    return a * b
+
+def dividir(a, b):
+    return a / b
+
+OPERACOES = {"+": somar, "-": subtrair, "*": multiplicar, "/": dividir}
+
+def calcular(a, operador, b):
+    if not operador in OPERACOES:
+        raise ValueError(f"Operador desconhecido: {operador}")
+    return OPERACOES[operador](a, b)
+
+print(calcular(8, "+", 2))
+print(calcular(9, "/", 2))
+
+contas = [[8, "+", 2], [9, "/", 2], [7, "-", 10]]
+
+for a, operador, b in contas:
+    resultado = calcular(a, operador, b)
+    print(f"{a} {operador} {b} = {resultado}")
+
+try:
+    calcular(5, "%", 2)
+except ValueError as erro:
+    print(erro)
 
 # ============================================================
 # PARA ENTREGAR
@@ -34,3 +66,9 @@
 # 2. Envie este arquivo para a pasta aula-13. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# 10
+# 4.5
+# 8 + 2 = 10
+# 9 / 2 = 4.5
+# 7 - 10 = -3
+# Operador desconhecido: %

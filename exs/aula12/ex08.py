@@ -33,6 +33,73 @@
 #   carregar a lista ....... aula 12, slide 28  https://poo.leoad.com.br/aulas/aula-12/#s28
 #   FileNotFoundError ...... aula 11, slide 17  https://poo.leoad.com.br/aulas/aula-11/#s17
 
+import json
+from pathlib import Path
+
+class Contato:
+    def __init__(self, nome, telefone):
+        self.nome = nome
+        self.telefone = telefone
+
+    def para_dict(self):
+        return {"nome": self.nome, "telefone": self.telefone}
+
+    @classmethod
+    def de_dict(cls, dados):
+        return cls(dados["nome"], dados["telefone"])
+
+class RepositorioContatos:
+    def __init__(self, caminho):
+        self.caminho = Path(caminho)
+        self.contatos = {}
+
+        try:
+            with self.caminho.open("r", encoding="utf-8") as arquivo:
+                lista = json.load(arquivo)
+        except FileNotFoundError:
+            return
+        for dados in lista:
+            contato = Contato.de_dict(dados)
+            self.contatos[contato.nome] = contato
+
+    def salvar(self):
+        lista = [
+            contato.para_dict()
+            for contato in self.contatos.values()
+        ]
+
+        with self.caminho.open("w", encoding="utf-8") as arquivo:
+            json.dump(lista, arquivo, ensure_ascii=False, indent=2)
+
+    def adicionar(self, contato):
+        self.contatos[contato.nome] = contato
+        self.salvar()
+
+    def buscar(self, nome):
+        return self.contatos.get(nome)
+
+    def remover(self, nome):
+        if nome not in self.contatos:
+            return False
+
+        del self.contatos[nome]
+        self.salvar()
+        return True
+
+    def quantidade(self):
+        return len(self.contatos)
+
+caminho = Path(__file__).parent / "contatos.json"
+repositorio = RepositorioContatos(caminho)
+
+repositorio.adicionar(Contato("Ana", "62 99999-0001"))
+repositorio.adicionar(Contato("Bruno", "62 98888-0002"))
+
+print(repositorio.quantidade())
+print(repositorio.buscar("Ana").telefone)
+print(repositorio.buscar("Zé"))
+print(repositorio.remover("Bruno"))
+print(repositorio.quantidade())
 
 # ============================================================
 # PARA ENTREGAR
@@ -41,3 +108,8 @@
 # 2. Envie este arquivo para a pasta aula-12. O nome tem que ser ex08.py.
 # ============================================================
 # SAÍDA:
+# 2
+# 62 99999-0001
+# None
+# True
+# 1
