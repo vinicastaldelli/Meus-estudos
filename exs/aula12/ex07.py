@@ -30,6 +30,42 @@
 #   json.dump e json.load .. aula 12, slide 18  https://poo.leoad.com.br/aulas/aula-12/#s18
 #   salvar a lista ......... aula 12, slide 26  https://poo.leoad.com.br/aulas/aula-12/#s26
 
+import json
+from pathlib import Path
+
+class Livro:
+    def __init__(self, titulo, autor, paginas):
+        self.titulo = titulo
+        self.autor = autor
+        self.paginas = paginas
+
+    @classmethod
+    def de_linha(cls, linha):
+        titulo, autor, paginas = linha.strip().split(";")
+        return cls(titulo, autor, int(paginas))
+
+    def para_dict(self):
+        return {"titulo": self.titulo, "autor": self.autor, "paginas": self.paginas}
+
+def converter(origem, destino):
+    livros = []
+    with open(origem, "r", encoding="utf-8") as arquivo:
+        for linha in arquivo:
+            if linha.strip():
+                livros.append(Livro.de_linha(linha).para_dict())
+    with open(destino, "w", encoding="utf-8") as arquivo:
+        json.dump(livros, arquivo, ensure_ascii=False, indent=2)
+    return len(livros)
+
+PASTA = Path(__file__).parent
+origem = PASTA / "livros.txt"
+destino = PASTA / "livros.json"
+
+with open(origem, "w", encoding="utf-8") as arquivo:
+    arquivo.write("Dom Casmurro;Machado de Assis;256\n")
+    arquivo.write("A Hora da Estrela;Claricec Lispector;88\n")
+    arquivo.write("Vidas Secas;Graciliano Ramos;176\n")
+print(converter(origem, destino))
 
 # ============================================================
 # PARA ENTREGAR
@@ -38,3 +74,4 @@
 # 2. Envie este arquivo para a pasta aula-12. O nome tem que ser ex07.py.
 # ============================================================
 # SAÍDA:
+# 3
