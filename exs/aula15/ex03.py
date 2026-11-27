@@ -39,7 +39,7 @@ class Item(ABC):
         pass
 
     def to_params(self):
-        return (self.tipo, self.titulo, None)    # quem não tem edição grava NULL
+        return (self.tipo, self.titulo, None)
 
     @classmethod
     def from_row(cls, linha):
