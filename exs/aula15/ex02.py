@@ -55,7 +55,6 @@ class RepositorioUsuarios:
             ).fetchall()
         return [Usuario.from_row(linha) for linha in linhas]
 
-    # escreva aqui os métodos cadastrar() e buscar_por_email()
     def cadastrar(self, usuario):
         try:
             with sqlite3.connect(self.caminho) as conexao:
